@@ -4,13 +4,18 @@ pages_build_output_dir = "dist"
 
 [[kv_namespaces]]
 binding = "BINS"
-id = "your-kv-namespace-id"
-preview_id = "your-kv-preview-id"
+id = "d0d1d095d2b3416883844c573fb87365"
+preview_id = "d0d1d095d2b3416883844c573fb87365"
 
 [[kv_namespaces]]
 binding = "CONVERSATIONS"
-id = "your-conversations-namespace-id"
-preview_id = "your-conversations-preview-id"
+id = "1eb999a8dcd44aeaa6093ae2a15d0b66"
+preview_id = "1eb999a8dcd44aeaa6093ae2a15d0b66"
+
+[[kv_namespaces]]
+binding = "PRESENCE"
+id = "5f6df07dc2a549948534cb8853e23d02"
+preview_id = "5f6df07dc2a549948534cb8853e23d02"
 
 [[durable_objects.bindings]]
 name = "WEBSOCKET_DURABLE_OBJECT"
