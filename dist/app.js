@@ -2307,9 +2307,29 @@ class TuneForgeUltimate {
         const loomStartIndex = this.currentMessages.length;
         const messagesToSend = [...this.currentMessages];
         
-        // Add custom instructions if provided
+        // Add custom instructions to last user message if provided
         if (customInstructions) {
-            messagesToSend.push({ role: 'system', content: customInstructions });
+            // Find the last user message
+            let lastUserIndex = -1;
+            for (let i = messagesToSend.length - 1; i >= 0; i--) {
+                if (messagesToSend[i].role === 'user') {
+                    lastUserIndex = i;
+                    break;
+                }
+            }
+            
+            if (lastUserIndex !== -1) {
+                // Append feedback to the last user message with Liminaut-style header
+                messagesToSend[lastUserIndex] = {
+                    ...messagesToSend[lastUserIndex],
+                    content: messagesToSend[lastUserIndex].content + 
+                        '\n\n### ⟨ Temporal Feedback from Future Generation ⟩\n' + 
+                        customInstructions
+                };
+                
+                // Also update the message in currentMessages to persist it
+                this.currentMessages[lastUserIndex].content = messagesToSend[lastUserIndex].content;
+            }
         }
         
         if (this.isCloudflare) {
