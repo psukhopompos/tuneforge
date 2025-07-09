@@ -16,11 +16,10 @@ binding = "CONVERSATIONS"
 id = "your-conversations-namespace-id"
 preview_id = "your-conversations-preview-id"
 
-[[durable_objects]]
-name = "WebSocketDurableObject"
-class_name = "WebSocketDurableObject"
+[durable_objects]
+bindings = [{name = "WEBSOCKET_DURABLE_OBJECT", class_name = "WebSocketDurableObject"}]
 
-[[durable_objects.migrations]]
+[[migrations]]
 tag = "v1"
 new_classes = ["WebSocketDurableObject"]
 
@@ -30,4 +29,3 @@ new_classes = ["WebSocketDurableObject"]
 
 [build]
 command = "npm run build"
-watch_paths = ["src/**/*.{js,jsx,ts,tsx,css,html}"]
