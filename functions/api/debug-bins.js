@@ -26,9 +26,9 @@ export async function onRequestGet(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can use debug endpoint.' 
+      error: 'Access denied. Only vie@odysseus.bot can use debug endpoint.' 
     }), { 
       status: 403,
       headers: { 'Content-Type': 'application/json' }

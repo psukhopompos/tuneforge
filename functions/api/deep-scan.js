@@ -25,9 +25,9 @@ export async function onRequestGet(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can use deep scan.' 
+      error: 'Access denied. Only vie@odysseus.bot can use deep scan.' 
     }), { 
       status: 403,
       headers: { 'Content-Type': 'application/json' }
@@ -172,11 +172,11 @@ export async function onRequestGet(context) {
     
     // Check for bins that need team assignment
     for (const bin of results.bins.all) {
-      if (!bin.teamId || bin.teamId !== 'morpheus-systems') {
+      if (!bin.teamId || bin.teamId !== 'odysseus-bot') {
         results.suggestions.push({
           type: 'UPDATE_BIN_TEAM',
           bin: bin.name,
-          action: `Update bin "${bin.name}" to have teamId: morpheus-systems`
+          action: `Update bin "${bin.name}" to have teamId: odysseus-bot`
         });
       }
     }

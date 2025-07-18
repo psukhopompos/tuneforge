@@ -30,9 +30,9 @@ export async function onRequestPost(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can run migration.',
+      error: 'Access denied. Only vie@odysseus.bot can run migration.',
       userEmail: user?.email
     }), { 
       status: 403,
@@ -47,23 +47,23 @@ export async function onRequestPost(context) {
     let skippedCount = 0;
     const migrationResults = [];
     
-    // Create morpheus-systems team if it doesn't exist
-    const teamId = 'morpheus-systems';
+    // Create odysseus-bot team if it doesn't exist
+    const teamId = 'odysseus-bot';
     let team = await env.TEAMS.get(`team:${teamId}`, 'json');
     
     if (!team) {
       team = {
         id: teamId,
-        name: 'Morpheus Systems',
+        name: 'Odysseus Bot',
         createdAt: new Date().toISOString(),
-        members: ['vie@morpheus.systems', 'michael@morpheus.systems', 'jessica@morpheus.systems']
+        members: ['vie@odysseus.bot', 'michael@odysseus.bot', 'jessica@odysseus.bot']
       };
       await env.TEAMS.put(`team:${teamId}`, JSON.stringify(team));
-      migrationResults.push('Created morpheus-systems team');
+      migrationResults.push('Created odysseus-bot team');
     }
     
-    // Ensure vie@morpheus.systems exists as admin with correct teamId
-    const vieEmail = 'vie@morpheus.systems';
+    // Ensure vie@odysseus.bot exists as admin with correct teamId
+    const vieEmail = 'vie@odysseus.bot';
     let vieUser = await env.USERS.get(`user:${vieEmail}`, 'json');
     
     if (!vieUser) {
@@ -75,13 +75,13 @@ export async function onRequestPost(context) {
         createdAt: new Date().toISOString()
       };
       await env.USERS.put(`user:${vieEmail}`, JSON.stringify(vieUser));
-      migrationResults.push('Created vie@morpheus.systems user');
+      migrationResults.push('Created vie@odysseus.bot user');
     } else if (vieUser.teamId !== teamId) {
       // Update existing user's teamId if it doesn't match
       const oldTeamId = vieUser.teamId;
       vieUser.teamId = teamId;
       await env.USERS.put(`user:${vieEmail}`, JSON.stringify(vieUser));
-      migrationResults.push(`Updated vie@morpheus.systems teamId from '${oldTeamId}' to '${teamId}'`);
+      migrationResults.push(`Updated vie@odysseus.bot teamId from '${oldTeamId}' to '${teamId}'`);
     }
     
     // Process each bin

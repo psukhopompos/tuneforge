@@ -25,9 +25,9 @@ export async function onRequestPost(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can run manual migration.' 
+      error: 'Access denied. Only vie@odysseus.bot can run manual migration.' 
     }), { 
       status: 403,
       headers: { 'Content-Type': 'application/json' }
@@ -80,13 +80,13 @@ export async function onRequestPost(context) {
             const newBin = {
               id: binData.id,
               name: binData.name,
-              teamId: 'morpheus-systems',
-              createdBy: 'vie@morpheus.systems',
+              teamId: 'odysseus-bot',
+              createdBy: 'vie@odysseus.bot',
               createdAt: new Date().toISOString(),
               conversationCount: binData.conversationCount
             };
             
-            const binKey = `bin:morpheus-systems:${newBin.id}`;
+            const binKey = `bin:odysseus-bot:${newBin.id}`;
             await env.BINS.put(binKey, JSON.stringify(newBin));
             results.created.push({ name: binData.name, status: 'created', key: binKey, id: newBin.id });
           }
@@ -112,10 +112,10 @@ export async function onRequestPost(context) {
         }
         
         // Update bin with correct team
-        bin.teamId = 'morpheus-systems';
+        bin.teamId = 'odysseus-bot';
         
         // Save with new key format
-        const newKey = `bin:morpheus-systems:${bin.id || binId}`;
+        const newKey = `bin:odysseus-bot:${bin.id || binId}`;
         await env.BINS.put(newKey, JSON.stringify(bin));
         
         // Delete old key if different

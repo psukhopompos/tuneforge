@@ -147,8 +147,8 @@ export async function onRequestPost(context) {
       const retryDelay = (attempt) => Math.min(1000 * Math.pow(2, attempt), 5000); // Exponential backoff: 1s, 2s, 4s (max 5s)
       
       try {
-        // Handle OpenAI models (including o3/o4-mini)
-        if ((modelId.startsWith('gpt') || modelId.startsWith('o3') || modelId.startsWith('o4')) && openai) {
+        // Handle OpenAI models through OpenRouter
+        if ((modelId.startsWith('openai/') || modelId.startsWith('gpt') || modelId.startsWith('o3') || modelId.startsWith('o4')) && openrouter) {
           const isO3Model = modelId.includes('o3') || modelId.includes('o4-mini');
           
           const params = {
@@ -169,7 +169,7 @@ export async function onRequestPost(context) {
             params.max_tokens = maxTokens || 1000;
           }
           
-          const completion = await openai.chat.completions.create(params);
+          const completion = await openrouter.chat.completions.create(params);
           
           const rawContent = completion.choices[0].message.content;
           let responseData = {
@@ -201,6 +201,25 @@ export async function onRequestPost(context) {
           }
           
           return responseData;
+        } else if (modelId.startsWith('anthropic/') && openrouter) {
+          // Handle Anthropic models through OpenRouter
+          const completion = await openrouter.chat.completions.create({
+            model: modelId,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              ...messages
+            ],
+            temperature: temperature || 0.7,
+            max_tokens: maxTokens || 1000
+          });
+          
+          return {
+            model: modelId,
+            content: completion.choices[0].message.content,
+            usage: completion.usage,
+            completionIndex: completionIndex + 1,
+            totalCompletions: n || 1
+          };
         } else if (modelId.startsWith('claude') && anthropic) {
           const completion = await anthropic.messages.create({
             model: modelId,

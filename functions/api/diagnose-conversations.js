@@ -78,14 +78,14 @@ export async function onRequestGet(context) {
       const possibleKeys = [
         `${binId}:*`,  // Original format
         `conversation:${binId}:*`,  // Prefixed format
-        `bin:morpheus-systems:${binId}:*`  // Full format
+        `bin:odysseus-bot:${binId}:*`  // Full format
       ];
       
       results.analysis.possibleKeyFormats = possibleKeys;
       
       // Check if bin exists
       const binKeys = [
-        `bin:morpheus-systems:${binId}`,
+        `bin:odysseus-bot:${binId}`,
         `bin:${binId}`,
         binId
       ];

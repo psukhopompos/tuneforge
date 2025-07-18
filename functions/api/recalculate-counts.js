@@ -2,7 +2,7 @@
 export async function onRequestPost(context) {
   const { request, env } = context;
   
-  // Auth check - only vie@morpheus.systems can run this
+  // Auth check - only vie@odysseus.bot can run this
   let sessionToken = request.headers.get('X-Session-Token');
   if (!sessionToken) {
     const cookie = request.headers.get('Cookie');
@@ -25,9 +25,9 @@ export async function onRequestPost(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can recalculate counts.' 
+      error: 'Access denied. Only vie@odysseus.bot can recalculate counts.' 
     }), { 
       status: 403,
       headers: { 'Content-Type': 'application/json' }

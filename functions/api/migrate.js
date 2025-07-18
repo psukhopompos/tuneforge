@@ -1,4 +1,4 @@
-// One-time migration script to assign existing bins to vie@morpheus.systems
+// One-time migration script to assign existing bins to vie@odysseus.bot
 // This endpoint should be called once after deployment to migrate existing data
 
 export async function onRequestPost(context) {
@@ -7,10 +7,10 @@ export async function onRequestPost(context) {
   console.log('[Migration] User context:', user);
   console.log('[Migration] User email:', user?.email);
   
-  // Only allow vie@morpheus.systems to run migration
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  // Only allow vie@odysseus.bot to run migration
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can run migration.',
+      error: 'Access denied. Only vie@odysseus.bot can run migration.',
       debug: {
         hasUser: !!user,
         userEmail: user?.email,
@@ -34,8 +34,8 @@ export async function onRequestPost(context) {
       if (bin) {
         if (!bin.teamId) {
           // Migrate this bin
-          bin.teamId = 'morpheus-systems';
-          bin.createdBy = 'vie@morpheus.systems';
+          bin.teamId = 'odysseus-bot';
+          bin.createdBy = 'vie@odysseus.bot';
           
           // Preserve existing timestamps
           if (!bin.createdAt) {
@@ -71,16 +71,16 @@ export async function onRequestPost(context) {
       }
     }
     
-    // Ensure the morpheus-systems team exists
-    const teamId = 'morpheus-systems';
+    // Ensure the odysseus-bot team exists
+    const teamId = 'odysseus-bot';
     const existingTeam = await env.TEAMS.get(`team:${teamId}`, 'json');
     
     if (!existingTeam) {
       const team = {
         id: teamId,
-        name: 'morpheus.systems',
-        domain: 'morpheus.systems',
-        members: ['vie@morpheus.systems', 'michael@morpheus.systems', 'jessica@morpheus.systems'],
+        name: 'odysseus.bot',
+        domain: 'odysseus.bot',
+        members: ['vie@odysseus.bot', 'michael@odysseus.bot', 'jessica@odysseus.bot'],
         createdAt: new Date().toISOString(),
         settings: {
           allowAutoJoin: true
@@ -90,19 +90,19 @@ export async function onRequestPost(context) {
       await env.TEAMS.put(`team:${teamId}`, JSON.stringify(team));
     }
     
-    // Ensure vie@morpheus.systems user exists as admin
-    const vieUser = await env.USERS.get('user:vie@morpheus.systems', 'json');
+    // Ensure vie@odysseus.bot user exists as admin
+    const vieUser = await env.USERS.get('user:vie@odysseus.bot', 'json');
     if (!vieUser) {
       const user = {
         id: crypto.randomUUID(),
-        email: 'vie@morpheus.systems',
-        teamId: 'morpheus-systems',
+        email: 'vie@odysseus.bot',
+        teamId: 'odysseus-bot',
         role: 'admin',
         isFirstLogin: true,
         createdAt: new Date().toISOString()
       };
       
-      await env.USERS.put('user:vie@morpheus.systems', JSON.stringify(user));
+      await env.USERS.put('user:vie@odysseus.bot', JSON.stringify(user));
     }
     
     return new Response(JSON.stringify({ 

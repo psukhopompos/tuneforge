@@ -1,52 +1,43 @@
-name = "tuneforge"
-main = "src/index.js"
+name = "tuneforge-fork"
 compatibility_date = "2024-06-26"
-
-[site]
-bucket = "./dist"
+pages_build_output_dir = "dist"
 
 [[kv_namespaces]]
 binding = "BINS"
-id = "your-kv-namespace-id"
-preview_id = "your-kv-preview-id"
+id = "d0d1d095d2b3416883844c573fb87365"
+preview_id = "d0d1d095d2b3416883844c573fb87365"
 
 [[kv_namespaces]]
 binding = "CONVERSATIONS"
-id = "your-conversations-namespace-id"
-preview_id = "your-conversations-preview-id"
+id = "1eb999a8dcd44aeaa6093ae2a15d0b66"
+preview_id = "1eb999a8dcd44aeaa6093ae2a15d0b66"
 
 [[kv_namespaces]]
 binding = "USERS"
-id = "your-users-namespace-id"
-preview_id = "your-users-preview-id"
+id = "32b2ebbb94034703ac72f4e7a2f50470"
+preview_id = "32b2ebbb94034703ac72f4e7a2f50470"
 
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "your-sessions-namespace-id"
-preview_id = "your-sessions-preview-id"
+id = "d0ec61b208344a10a3d1a07ceb69ce3c"
+preview_id = "d0ec61b208344a10a3d1a07ceb69ce3c"
 
 [[kv_namespaces]]
 binding = "TEAMS"
-id = "your-teams-namespace-id"
-preview_id = "your-teams-preview-id"
+id = "94302d651994407f971b8ad075259cc1"
+preview_id = "94302d651994407f971b8ad075259cc1"
 
 [[kv_namespaces]]
 binding = "PRESENCE"
-id = "your-presence-namespace-id"
-preview_id = "your-presence-preview-id"
+id = "5f6df07dc2a549948534cb8853e23d02"
+preview_id = "5f6df07dc2a549948534cb8853e23d02"
 
-[[durable_objects]]
-name = "WebSocketDurableObject"
-class_name = "WebSocketDurableObject"
-
-[[durable_objects.migrations]]
-tag = "v1"
-new_classes = ["WebSocketDurableObject"]
+# Durable Objects not needed for Pages deployment
+# [[durable_objects.bindings]]
+# name = "WebSocketDurableObject"
+# class_name = "WebSocketDurableObject"
+# script_name = "tuneforge-fork"
 
 [vars]
 # These will be overridden by Cloudflare Pages environment settings
 # AUTH_PASSWORD will be set in Cloudflare Pages settings
-
-[build]
-command = "npm run build"
-watch_paths = ["src/**/*.{js,jsx,ts,tsx,css,html}"]

@@ -170,14 +170,14 @@ export async function onRequestPost(context) {
         // Check if this is an allowed domain for auto-registration
         const domain = email.split('@')[1];
         console.log('Domain extracted:', domain);
-        if (domain === 'morpheus.systems') {
+        if (domain === 'odysseus.bot') {
           // Auto-create user account
           const team = await ensureTeam(env, email);
           const newUser = {
             id: crypto.randomUUID(),
             email,
             teamId: team.id,
-            role: email === 'vie@morpheus.systems' ? 'admin' : 'member',
+            role: email === 'vie@odysseus.bot' ? 'admin' : 'member',
             isFirstLogin: true,
             createdAt: new Date().toISOString()
           };

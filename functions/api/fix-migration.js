@@ -25,9 +25,9 @@ export async function onRequestPost(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can run fix.' 
+      error: 'Access denied. Only vie@odysseus.bot can run fix.' 
     }), { 
       status: 403,
       headers: { 'Content-Type': 'application/json' }
@@ -65,7 +65,7 @@ export async function onRequestPost(context) {
           
           // Ensure team assignment
           if (!bin.teamId) {
-            bin.teamId = 'morpheus-systems';
+            bin.teamId = 'odysseus-bot';
           }
           
           // Save with proper key
@@ -94,7 +94,7 @@ export async function onRequestPost(context) {
         if (conv.binId) {
           // Try multiple key formats
           const binKeys = [
-            `bin:morpheus-systems:${conv.binId}`,
+            `bin:odysseus-bot:${conv.binId}`,
             `bin:${conv.binId}`,
             conv.binId
           ];

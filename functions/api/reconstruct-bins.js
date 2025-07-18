@@ -25,9 +25,9 @@ export async function onRequestPost(context) {
   }
   
   const user = await env.USERS.get(`user:${session.email}`, 'json');
-  if (!user || user.email !== 'vie@morpheus.systems') {
+  if (!user || user.email !== 'vie@odysseus.bot') {
     return new Response(JSON.stringify({ 
-      error: 'Access denied. Only vie@morpheus.systems can reconstruct bins.' 
+      error: 'Access denied. Only vie@odysseus.bot can reconstruct bins.' 
     }), { 
       status: 403,
       headers: { 'Content-Type': 'application/json' }
@@ -156,13 +156,13 @@ export async function onRequestPost(context) {
         const newBin = {
           id: binId,
           name: mapping.name,
-          teamId: 'morpheus-systems',
-          createdBy: 'vie@morpheus.systems',
+          teamId: 'odysseus-bot',
+          createdBy: 'vie@odysseus.bot',
           createdAt: pattern.conversations[0]?.createdAt || new Date().toISOString(),
           conversationCount: pattern.conversations.length
         };
         
-        const binKey = `bin:morpheus-systems:${binId}`;
+        const binKey = `bin:odysseus-bot:${binId}`;
         await env.BINS.put(binKey, JSON.stringify(newBin));
         results.created.push({
           name: mapping.name,
@@ -192,7 +192,7 @@ export async function onRequestPost(context) {
     const branchConv = await env.CONVERSATIONS.get(branchKey, 'json');
     if (branchConv && !branchConv.binId) {
       // This is a branch of an Ethereality Prompt conversation
-      const etherealBin = await env.BINS.get('bin:morpheus-systems:e452d57a2f042242', 'json');
+      const etherealBin = await env.BINS.get('bin:odysseus-bot:e452d57a2f042242', 'json');
       if (etherealBin) {
         branchConv.binId = etherealBin.id;
         await env.CONVERSATIONS.put(branchKey, JSON.stringify(branchConv));

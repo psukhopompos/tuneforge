@@ -43,10 +43,10 @@ class TuneForgeUltimate {
         this.processingQueue = false;
         
         // Input validation limits
-        this.maxMessageLength = 10000;
+        this.maxMessageLength = 250000;
         this.maxConversationNameLength = 100;
         this.maxBinNameLength = 50;
-        this.maxSystemPromptLength = 2000;
+        this.maxSystemPromptLength = 16000;
         
         // No session timeouts - sessions persist forever
         
@@ -1003,12 +1003,12 @@ class TuneForgeUltimate {
         if (this.isCloudflare) {
             // Static list for Cloudflare mode - matching local server models
             this.availableModels = [
-                { id: 'gpt-4.1-2025-04-14', name: 'GPT-4.1', provider: 'openai' },
-                { id: 'o3-2025-04-16', name: 'GPT-o3', provider: 'openai' },
-                { id: 'o4-mini-2025-04-16', name: 'GPT-o4-mini', provider: 'openai' },
-                { id: 'claude-3-opus-20240229', name: 'Claude 3 Opus', provider: 'anthropic' },
-                { id: 'claude-opus-4-20250514', name: 'Claude Opus 4', provider: 'anthropic' },
-                { id: 'claude-sonnet-4-20250514', name: 'Claude Sonnet 4', provider: 'anthropic' },
+                { id: 'openai/gpt-4', name: 'GPT-4', provider: 'openrouter' },
+                { id: 'openai/gpt-4-turbo', name: 'GPT-4 Turbo', provider: 'openrouter' },
+                { id: 'openai/gpt-4o', name: 'GPT-4o', provider: 'openrouter' },
+                { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', provider: 'openrouter' },
+                { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', provider: 'openrouter' },
+                { id: 'anthropic/claude-3.5-haiku', name: 'Claude 3.5 Haiku', provider: 'openrouter' },
                 { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', provider: 'google' },
                 { id: 'x-ai/grok-3', name: 'Grok 3', provider: 'openrouter' },
                 { id: 'x-ai/grok-3-mini', name: 'Grok 3 Mini', provider: 'openrouter' },
@@ -1781,7 +1781,7 @@ class TuneForgeUltimate {
                 <div class="completion-content" id="content-${index}">
                     ${isError ? 
                         `<div class="error-message">${response.error || 'No response generated'}</div>` :
-                        escapedContent
+                        this.renderBasicMarkdown(response.content)
                     }
                     ${response.reasoning ? `
                         <div class="reasoning-toggle" onclick="tuneforge.toggleReasoning(${index})">
@@ -2279,7 +2279,7 @@ class TuneForgeUltimate {
             `${response.model || 'Unknown'}${response.edited ? ' (edited)' : ''}${response.regenerated ? ' (regenerated)' : ''}`;
         
         // Update content
-        card.querySelector('.completion-content').innerHTML = this.escapeHtml(response.content);
+        card.querySelector('.completion-content').innerHTML = this.renderBasicMarkdown(response.content);
         
         // Update token count if available
         if (response.usage) {
@@ -3404,6 +3404,15 @@ class TuneForgeUltimate {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+    
+    renderBasicMarkdown(text) {
+        return this.escapeHtml(text)
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/^- (.+)$/gm, '• $1');
     }
     
     // Periodic saves
