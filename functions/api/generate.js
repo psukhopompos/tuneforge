@@ -8,7 +8,8 @@ const COT_MODELS = [
   'x-ai/grok-4',
   'gemini-2.5-pro',
   'models/gemini-2.5-pro',
-  'deepseek/deepseek-r1'
+  'deepseek/deepseek-r1',
+  'deepseek/deepseek-r1-0528'
 ];
 
 // Function to check if a model uses COT
@@ -82,7 +83,7 @@ export async function onRequestPost(context) {
   );
   
   try {
-    const { binId, systemPrompt, messages, models, temperature, maxTokens, max_completion_tokens, n } = await request.json();
+    const { binId, systemPrompt, messages, models, temperature, maxTokens, max_completion_tokens, n, topP } = await request.json();
     
     console.log(`[${timestamp}] Request ${requestId}:`, {
       binId,
@@ -167,6 +168,7 @@ export async function onRequestPost(context) {
           } else {
             params.temperature = temperature || 0.7;
             params.max_tokens = maxTokens || 1000;
+            params.top_p = topP || 0.95;
           }
           
           const completion = await openrouter.chat.completions.create(params);
@@ -210,7 +212,8 @@ export async function onRequestPost(context) {
               ...messages
             ],
             temperature: temperature || 0.7,
-            max_tokens: maxTokens || 1000
+            max_tokens: maxTokens || 1000,
+            top_p: topP || 0.95
           });
           
           return {
@@ -229,7 +232,8 @@ export async function onRequestPost(context) {
               content: m.content
             })),
             temperature: temperature || 0.7,
-            max_tokens: maxTokens || 1000
+            max_tokens: maxTokens || 1000,
+            top_p: topP || 0.95
           });
           
           return {
@@ -252,7 +256,8 @@ export async function onRequestPost(context) {
               ...messages
             ],
             temperature: temperature || 0.7,
-            max_tokens: maxTokens || 1000
+            max_tokens: maxTokens || 1000,
+            top_p: topP || 0.95
           });
           
           const rawContent = completion.choices[0].message.content;
@@ -314,7 +319,14 @@ export async function onRequestPost(context) {
             }
           });
           
-          const chat = model.startChat({ history });
+          const chat = model.startChat({ 
+            history,
+            generationConfig: {
+              temperature: temperature || 0.7,
+              topP: topP || 0.95,
+              maxOutputTokens: maxTokens || 1000
+            }
+          });
           const result = await chat.sendMessage(currentPrompt);
           const response = await result.response;
           

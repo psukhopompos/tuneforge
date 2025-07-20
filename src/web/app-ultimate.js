@@ -1003,17 +1003,13 @@ class TuneForgeUltimate {
         if (this.isCloudflare) {
             // Static list for Cloudflare mode - matching local server models
             this.availableModels = [
-                { id: 'openai/gpt-4', name: 'GPT-4', provider: 'openrouter' },
-                { id: 'openai/gpt-4-turbo', name: 'GPT-4 Turbo', provider: 'openrouter' },
-                { id: 'openai/gpt-4o', name: 'GPT-4o', provider: 'openrouter' },
-                { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', provider: 'openrouter' },
                 { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', provider: 'openrouter' },
+                { id: 'anthropic/claude-3-sonnet', name: 'Claude 3 Sonnet', provider: 'openrouter' },
                 { id: 'anthropic/claude-3.5-haiku', name: 'Claude 3.5 Haiku', provider: 'openrouter' },
                 { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', provider: 'google' },
                 { id: 'x-ai/grok-3', name: 'Grok 3', provider: 'openrouter' },
-                { id: 'x-ai/grok-3-mini', name: 'Grok 3 Mini', provider: 'openrouter' },
                 { id: 'x-ai/grok-4', name: 'Grok 4', provider: 'openrouter' },
-                { id: 'deepseek/deepseek-r1', name: 'Deepseek R1', provider: 'openrouter' },
+                { id: 'deepseek/deepseek-r1-0528', name: 'Deepseek R1', provider: 'openrouter' },
                 { id: 'moonshotai/kimi-k2', name: 'Kimi K2', provider: 'openrouter' }
             ];
         } else {
@@ -1452,7 +1448,8 @@ class TuneForgeUltimate {
             systemPrompt: document.getElementById('systemPrompt').value,
             messages: this.currentMessages,
             models: this.selectedModels,
-            n: completions
+            n: completions,
+            topP: 0.95
         };
         
         // Check if any selected model is o3/o4-mini which requires special parameters
@@ -2194,7 +2191,8 @@ class TuneForgeUltimate {
                     binId: this.currentBin.id,
                     systemPrompt: document.getElementById('systemPrompt').value,
                     messages: this.currentMessages,
-                    models: [model]
+                    models: [model],
+                    topP: 0.95
                 };
                 
                 // Check if regenerating with o3/o4-mini model
@@ -2681,7 +2679,8 @@ class TuneForgeUltimate {
                     binId: this.currentBin.id,
                     systemPrompt: document.getElementById('systemPrompt').value,
                     messages: this.currentMessages,
-                    models: this.selectedModels
+                    models: this.selectedModels,
+                    topP: 0.95
                 };
                 
                 // Check if any selected model is o3/o4-mini
@@ -2770,7 +2769,8 @@ class TuneForgeUltimate {
                     binId: this.currentBin.id,
                     systemPrompt: document.getElementById('systemPrompt').value,
                     messages: this.currentMessages,
-                    models: this.selectedModels
+                    models: this.selectedModels,
+                    topP: 0.95
                 };
                 
                 // Check if any selected model is o3/o4-mini
@@ -2899,7 +2899,8 @@ class TuneForgeUltimate {
                     models: uniqueFailedModels,
                     temperature: parseFloat(document.getElementById('temperature').value),
                     maxTokens: parseInt(document.getElementById('maxTokensValue').textContent),
-                    n: parseInt(document.getElementById('completionsValue').textContent)
+                    n: parseInt(document.getElementById('completionsValue').textContent),
+                    topP: 0.95
                 };
                 
                 const response = await this.fetchWithAuth(`${this.apiBase}/generate`, {
